@@ -6,6 +6,8 @@
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </path>
 
+   <path id="application" location="${jar.dir}/${ant.project.name}.jar"/>
+
     <property name="src.dir"     value="src"/>
 
     <property name="build.dir"   value="build"/>
@@ -38,7 +40,7 @@
         <java fork="true" classname="${main-class}">
             <classpath>
                 <path refid="classpath"/>
-                <path location="${jar.dir}/${ant.project.name}.jar"/>
+                <path refid="application"/>
             </classpath>
         </java>
     </target>
@@ -47,4 +49,17 @@
 
     <target name="main" depends="clean,run"/>
 
+
+    <target name="junit" depends="jar">
+        <junit printsummary="yes">
+            <classpath>
+                <path refid="classpath"/>
+                <path refid="application"/>
+            </classpath>
+            
+            <batchtest fork="yes">
+                <fileset dir="${src.dir}" includes="*Test.java"/>
+            </batchtest>
+        </junit>
+    </target>
 </project>
